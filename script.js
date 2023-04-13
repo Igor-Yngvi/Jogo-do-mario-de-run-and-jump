@@ -47,3 +47,35 @@ const loop = setInterval(() => {
 }, 10);
 document.addEventListener('keydown', jump);
 document.addEventListener('touchstart', jump);
+// Adiciona um listener de eventos para a API Gamepad
+window.addEventListener("gamepadconnected", event => {
+  // Obtém o gamepad conectado
+  const gamepad = event.gamepad;
+
+  // Define o índice do botão a ser verificado
+  const buttonIndex = 0; // O primeiro botão do controle (índice 0)
+
+  // Função a ser chamada quando o botão é clicado
+  function buttonClicked() {
+    // Chama a função desejada para realizar a ação desejada
+    jump()
+  }
+
+  // Adiciona um loop para atualizar o estado do gamepad
+  function update() {
+    // Obtém o estado do gamepad
+    const state = navigator.getGamepads()[gamepad.index];
+
+    // Verifica se o gamepad está conectado e se o botão está pressionado
+    if (state && state.buttons[buttonIndex].pressed) {
+      // Chama a função quando o botão é clicado
+      buttonClicked();
+    }
+
+    // Chama a função de atualização novamente na próxima renderização do frame
+    requestAnimationFrame(update);
+  }
+
+  // Chama a função de atualização pela primeira vez
+  update();
+});
